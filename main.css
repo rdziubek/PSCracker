@@ -1,0 +1,21 @@
+@import url(https://necolas.github.io/normalize.css/latest/normalize.css);
+@import url(https://fonts.googleapis.com/css?family=Roboto&display=swap);
+
+body {
+    font-family: 'Roboto', sans-serif;
+    height: 100vh;
+    position: relative;
+    text-align: center;
+    width: 100vw;
+}
+
+.info {
+    font-size: 500%;
+    left: 50%;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    text-align: center;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
