@@ -2,7 +2,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto&display=swap);
 
 body {
-    font-family: 'Roboto', sans-serif;
     height: 100vh;
     position: relative;
     text-align: center;
@@ -10,6 +9,7 @@ body {
 }
 
 .info {
+    font-family: 'Roboto', sans-serif;
     font-size: 500%;
     left: 50%;
     margin: 0;
