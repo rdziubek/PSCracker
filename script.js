@@ -16,7 +16,7 @@ function fetchSourcePage() {
     });
 }
 
-function fetchDate(fileName) {
+function getDate(fileName) {
     // If needed put escape chars in fileName
     fileName = fileName.replace('.', '\\.');
 
@@ -56,6 +56,7 @@ function prepareResources() {
     let check = function () {
         if (fetchedSourcePage === undefined) setTimeout(check, 250);
     };
+
     check();
 }
 
@@ -64,7 +65,7 @@ function handleDrop(ev) {
 
     // Compile data
     fileName = ev.dataTransfer.items[0].getAsFile().name;
-    date = fetchDate(fileName);
+    date = getDate(fileName);
     paswd = crackPaswd(date);
 
     textInfo.innerHTML = fileName +
