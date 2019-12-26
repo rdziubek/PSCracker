@@ -7,6 +7,21 @@ let fileName = null;
 let date = null;
 let paswd = null;
 
+function getFileName(ev) {
+    let tempFileName = ev.dataTransfer.items[0].getAsFile().name;
+
+    // If a file is to be created in a directory in which there already is a file named the same,
+    // the OS appends a ' ' character followed by some index to the newly created one
+    // (e.g. 'file_name.zip', 'file_name (2).zip', ...).
+    if (tempFileName.includes(' ')) {
+        const regexFileName = /\s.*(?=\.)/gm;
+        const redundantPart = tempFileName.match(regexFileName);
+        tempFileName = tempFileName.replace(String(redundantPart), '');
+    }
+
+    return tempFileName.trim();
+}
+
 function fetchSourcePage() {
     let url = 'https://green-darkness-a2a9.witampanstwa.workers.dev/?' +
         encodeURIComponent('https://zse.edu.pl/Siewniak/');
@@ -64,7 +79,7 @@ function handleDrop(ev) {
     ev.preventDefault();
 
     // Compile data
-    fileName = ev.dataTransfer.items[0].getAsFile().name;
+    fileName = getFileName(ev);
     date = getDate(fileName);
     paswd = crackPaswd(date);
 
