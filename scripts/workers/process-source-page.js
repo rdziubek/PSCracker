@@ -52,7 +52,7 @@ function findDate() {
 }
 
 /**
- * Returns the sum of date's digits with a 'ps_' prefix
+ * Returns the sum of date's digits with a 'ps_' or 'ps__' prefix
  */
 function crackPaswd() {
     postMessage(['Calculating password&hellip;', '', '']);
@@ -62,7 +62,7 @@ function crackPaswd() {
         for (let i = 0; i < fileDate.length; i++) {
             if (fileDate[i] >= '0' && fileDate[i] <= '9') sum += Number(fileDate[i]);
         }
-        resolve('ps_' + sum);
+        resolve((fileDate.includes('2020') ? 'ps__' : 'ps_') + sum);
     });
 }
 
