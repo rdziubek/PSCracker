@@ -16,8 +16,7 @@ function validateFilename() {
     return new Promise((resolve) => {
         let temp = fileName;
         if (temp.includes(' ')) {
-            const regex = /\s.*(?=\.)/gm;
-            const redundantPart = temp.match(regex);
+            const redundantPart = temp.match(/\s.*(?=\.)/m);
             temp = temp.replace(String(redundantPart), '').trim();
         }
         resolve(temp);
@@ -31,22 +30,16 @@ function findDate() {
     postMessage(['Regexing date&hellip;', '', '']);
 
     return new Promise((resolve, reject) => {
-        const escapedFileName = fileName.replace('.', '\\.');
-        let countRegexp = new RegExp(escapedFileName, 'gsm');
-        let count = (String(sourcePageContent).match(countRegexp) || []).length;
+        if (sourcePageContent.includes(fileName)) {
+            const sourcePageDownloadSection = String(sourcePageContent)
+                .match(/(?=<h2> Materiały do pobrania <\/h2>)(.*?)(?=<h2> Archiwum <\/h2>)/ms);
+            const escapedFileName = fileName.replace('.', '\\.');
+            const matchDateImmediatelyBeforeTarget =
+                new RegExp('\\d{1,2}\\.\\d{2}\\.\\d{4}(?=(.*)' +
+                    escapedFileName + ')(?!.*\\d{1,2}\\.\\d{2}\\.\\d{4}.*' +
+                    escapedFileName + ')', 'ms');
 
-        if (count > 0) {
-            const downloadSection = String(sourcePageContent)
-                .match(/(?=<h2> Materiały do pobrania <\/h2>)(.*?)(?=<h2> Archiwum <\/h2>)/gsm);
-            const subMatch1Regexp =
-                new RegExp('(.*[0-9]?[0-9][.][0-9]?[0-9][.][0-9]?[0-9]?[0-9]?[0-9])(.*?)(?=' + escapedFileName + ')', 'gsm');
-            const subMatch1 = String(downloadSection)
-                .match(subMatch1Regexp);
-            const subMatch2 = String(subMatch1)
-                .match(/(.*)(.[0-9]?[0-9][.][0-9]?[0-9][.][0-9]?[0-9]?[0-9]?[0-9])/gsm);
-            const subMatch3 = String(subMatch2)
-                .match(/[0-9]?[0-9][.][0-9]?[0-9][.][0-9]?[0-9]?[0-9]?[0-9]+$/gsm);
-            resolve(subMatch3);
+            resolve(sourcePageDownloadSection[0].match(matchDateImmediatelyBeforeTarget)[0]);
         } else reject(`'${fileName}'\nnot found in source.`);
     });
 }
